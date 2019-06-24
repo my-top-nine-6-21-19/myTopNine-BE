@@ -8,12 +8,27 @@ module.exports = {
     findById,
     insert,
     remove,
-    update
+    update,
+    findByUser
 }
 
 function find() {
     return db('friends')
 }
+
+async function findByUser(id){
+    let user = await db('users')
+        .where({ id })
+        .first()
+    let friends = await getUserFriends(id)
+    if(user){
+        return {...user, friends}
+    } else {
+        return null
+    }
+}
+
+
 
 async function findById(id) {
     let friend = await db('friends')
@@ -26,6 +41,11 @@ async function findById(id) {
         return null
     }
     
+}
+
+function getUserFriends(user_id){
+    return db('friends')
+    .where({ user_id })
 }
 
 

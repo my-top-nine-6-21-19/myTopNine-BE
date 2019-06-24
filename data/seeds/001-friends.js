@@ -5,8 +5,8 @@ exports.seed = function(knex, Promise) {
     .then(function () {
       // Inserts seed entries
       return knex('friends').insert([
-        {name: 'test2', rank: 9, description: "test desc " }, 
-        {name: 'test2', rank: 2, description: "test desc " }
+        {users_id:1, name: 'test2', rank: 9, description: "test desc " }, 
+        {users_id: 1, name: 'test2', rank: 2, description: "test desc " }
       ]);
     });
 };

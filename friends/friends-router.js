@@ -3,13 +3,26 @@ const Friends = require('./friends-model.js')
 
 const restricted = require('../auth/authenticate.js')
 
-router.get('/', restricted, (req, res) => {
+router.get('/',  (req, res) => {
     Friends.find()
         .then(friends => {
             res.status(200).json(friends);
         }).catch(err => {
             res.status(500).json({ message: 'error getting friends' })
 
+        })
+})
+
+router.get('/test/:id', (req, res)=>{
+    Friends.findByUser(req.parans.id)
+        .then(friend => {
+            if (friend){
+                res.status(200).json(friend);
+            } else {
+                res.status(404).json({  message: 'user not found' })
+            }
+        }).catch(err =>{
+            res.status(500).json(error)
         })
 })
 
