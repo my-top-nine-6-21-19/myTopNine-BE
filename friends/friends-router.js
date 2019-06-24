@@ -1,7 +1,9 @@
 const router = require('express').Router()
 const Friends = require('./friends-model.js')
 
-router.get('/', (req, res) => {
+const restricted = require('../auth/authenticate.js')
+
+router.get('/', restricted, (req, res) => {
     Friends.find()
         .then(friends => {
             res.status(200).json(friends);
@@ -11,7 +13,7 @@ router.get('/', (req, res) => {
         })
 })
 
-router.get('/:id', (req, res) => {
+router.get('/:id', restricted, (req, res) => {
     Friends.findById(req.params.id)
         .then(friend => {
             if (friend) {
@@ -25,7 +27,7 @@ router.get('/:id', (req, res) => {
         });
 });
 
-router.post('/', (req, res) => {
+router.post('/',restricted , (req, res) => {
     Friends.insert(req.body)
         .then(friend => {
             res.status(200).json(friend);
@@ -35,7 +37,7 @@ router.post('/', (req, res) => {
         });
 });
 
-router.delete('/:id', (req, res) => {
+router.delete('/:id', restricted, (req, res) => {
     Friends.remove(req.params.id)
         .then(friend => {
             res.status(200).json(friend);
@@ -45,7 +47,7 @@ router.delete('/:id', (req, res) => {
         });
 });
 
-router.put('/:id', (req, res) => {
+router.put('/:id', restricted, (req, res) => {
     Friends.update(req.params.id, req.body)
         .then(friend => {
             res.status(200).json(friend);
