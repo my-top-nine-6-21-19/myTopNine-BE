@@ -8,7 +8,7 @@ const contactsRouter = require('../contacts/contacts-router.js')
 const usersRouter = require('../auth/users-router.js')
 const authRouter = require('../auth/auth-router.js')
 
-server.use(cors)
+server.use(cors())
 server.use(helmet());
 server.use(express.json());
 
