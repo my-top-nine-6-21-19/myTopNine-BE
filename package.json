@@ -16,9 +16,11 @@
     "express": "^4.17.1",
     "helmet": "^3.18.0",
     "knex": "^0.17.6",
+    "pg": "^7.11.0",
     "sqlite3": "^4.0.9"
   },
   "devDependencies": {
+    "cross-env": "^5.2.0",
     "nodemon": "^1.19.1"
   }
 }
