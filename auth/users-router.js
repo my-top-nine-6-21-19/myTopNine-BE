@@ -1,18 +1,19 @@
 const router = require('express').Router();
 
 const Users = require('./users-model.js');
+const checkRoles = require('./checkRole.js')
+const restricted = require('./authenticate')
 
-
-router.get('/', (req, res) => {
+router.get('/', restricted,  checkRoles('Admin'), (req, res) => {
   Users.find()
     .then(users => {
-      res.json(users);
+      res.json({users, user: req.user});
     })
     .catch(err => res.send(err));
 });
 
 
-router.get('/:id', (req, res)=>{
+router.get('/:id', restricted, (req, res)=>{
   Users.findByUser(req.params.id)
       .then(user => {
           if (user){

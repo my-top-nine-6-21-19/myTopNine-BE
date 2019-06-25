@@ -31,10 +31,6 @@ function getUserFriends(users_id) {
     .where({ users_id })
 }
 
-function getFriendContacts(friend_id) {
-  return db('contacts')
-      .where({ friend_id })
-}
 
 function findBy(filter) {
   return db('users').where(filter);
