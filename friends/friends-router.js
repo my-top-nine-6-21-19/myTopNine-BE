@@ -3,7 +3,7 @@ const Friends = require('./friends-model.js')
 
 const restricted = require('../auth/authenticate.js')
 
-router.get('/',  (req, res) => {
+router.get('/',restricted,  (req, res) => {
     Friends.find()
         .then(friends => {
             res.status(200).json(friends);
@@ -15,7 +15,7 @@ router.get('/',  (req, res) => {
 
 
 
-router.get('/:id', (req, res) => {
+router.get('/:id',restricted, (req, res) => {
     Friends.findById(req.params.id)
         .then(friend => {
             if (friend) {
