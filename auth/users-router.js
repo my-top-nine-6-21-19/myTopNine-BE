@@ -26,4 +26,34 @@ router.get('/:id', restricted, (req, res)=>{
       })
 })
 
+router.post('/',restricted , checkRoles('Admin'), (req, res) => {
+  Users.insert(req.body)
+      .then(user => {
+          res.status(200).json(user);
+      })
+      .catch(error => {
+          res.status(500).json({ message: 'We ran into an error adding the user' });
+      });
+});
+
+router.delete('/:id', restricted, checkRoles('Admin'), (req, res) => {
+  Users.remove(req.params.id)
+      .then(user => {
+          res.status(200).json(user);
+      })
+      .catch(error => {
+          res.status(500).json({ message: 'We ran into an error deleting the users' });
+      });
+});
+
+router.put('/:id', restricted, checkRoles('Admin'), (req, res) => {
+  Users.update(req.params.id, req.body)
+      .then(user => {
+          res.status(200).json(user);
+      })
+      .catch(error => {
+          res.status(500).json({ message: 'We ran into an error updating the user' });
+      });
+});
+
 module.exports = router;
