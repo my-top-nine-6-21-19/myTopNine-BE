@@ -5,11 +5,35 @@ module.exports = {
   find,
   findBy,
   findById,
-  insert
+  insert,
+  findByUser,
+
 };
 
 function find() {
   return db('users').select('id', 'username', 'password');
+}
+
+async function findByUser(id) {
+  let user = await db('users')
+    .where({ id })
+    .first();
+  let friends = await getUserFriends(id)
+  if (user) {
+    return { ...user, friends }
+  } else {
+    return null
+  }
+}
+
+function getUserFriends(users_id) {
+  return db('friends')
+    .where({ users_id })
+}
+
+function getFriendContacts(friend_id) {
+  return db('contacts')
+      .where({ friend_id })
 }
 
 function findBy(filter) {
@@ -29,9 +53,9 @@ function findById(id) {
 }
 
 function insert(user) {
-    return db('users')
-        .insert(user, "id")
-        .then(([id]) => {
-            return findById(id)
-        })
+  return db('users')
+    .insert(user, "id")
+    .then(([id]) => {
+      return findById(id)
+    })
 }

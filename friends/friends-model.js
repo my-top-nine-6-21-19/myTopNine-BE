@@ -9,49 +9,16 @@ module.exports = {
     insert,
     remove,
     update,
-    findByUser
 }
 
 function find() {
     return db('friends')
 }
 
-async function findByUser(id){
-    let user = await db('users')
-        .where({ id })
-        .first()
-    let friends = await getUserFriends(id)
-    if(user){
-        return {...user, friends}
-    } else {
-        return null
-    }
-}
-
-
-
-async function findById(id) {
-    let friend = await db('friends')
-        .where({ id })
-        .first()
-    let contacts = await getFriendContacts(id)
-    if (friend){
-       return { ...friend, contacts } 
-    }else {
-        return null
-    }
-    
-}
-
-function getUserFriends(user_id){
+function findById(id){
     return db('friends')
-    .where({ user_id })
-}
-
-
-function getFriendContacts(friend_id) {
-    return db('contacts')
-        .where({ friend_id })
+    .where({ id })
+    .first()
 }
 
 function insert(friend) {

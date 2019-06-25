@@ -12,12 +12,15 @@ exports.up = function(knex, Promise) {
           .onUpdate('CASCADE');
 
         tbl.string('name', 200).notNullable()
-        tbl.integer('rank').notNullable().unique()
+        tbl.integer('rank').notNullable();
         tbl.text('description').notNullable()
+        tbl.string('email', 128).notNullable();
+        tbl.string('phone',128).notNullable();
+        tbl.string('address', 128).notNullable();
     })
   };
   
   exports.down = function(knex, Promise) {
-    return knex.schema(dropTableIfExists('friends'))
+    return knex.schema.dropTableIfExists('friends')
   };
   

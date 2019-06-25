@@ -13,20 +13,9 @@ router.get('/',  (req, res) => {
         })
 })
 
-router.get('/test/:id', (req, res)=>{
-    Friends.findByUser(req.parans.id)
-        .then(friend => {
-            if (friend){
-                res.status(200).json(friend);
-            } else {
-                res.status(404).json({  message: 'user not found' })
-            }
-        }).catch(err =>{
-            res.status(500).json(error)
-        })
-})
 
-router.get('/:id', restricted, (req, res) => {
+
+router.get('/:id', (req, res) => {
     Friends.findById(req.params.id)
         .then(friend => {
             if (friend) {
