@@ -50,8 +50,9 @@ async function update(id, changes) {
         const users = await findByUser(updated.users_id)
         console.log('users,', users)
         users.friends.forEach(user => {
-            console.log({ user })
-            if (user.rank === updated.rank && user !== updated) {
+            console.log(user.rank)
+            console.log(user.id !== updated.id)
+            if (user.rank === updated.rank && user.id !== updated.id) {
                 if (old.rank > user.rank) {
                     update(user.id, { ...user, rank: user.rank + 1 })
                 } else if (old.rank < user.rank) {
