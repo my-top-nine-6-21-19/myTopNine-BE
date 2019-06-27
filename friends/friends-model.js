@@ -1,6 +1,6 @@
 const knex = require('knex');
 const knexConfig = require('../knexfile');
-
+const { findByUser } = require('../auth/users-model.js')
 const db = require('../data/dbConfig.js')
 
 module.exports = {
@@ -15,10 +15,10 @@ function find() {
     return db('friends')
 }
 
-function findById(id){
+function findById(id) {
     return db('friends')
-    .where({ id })
-    .first()
+        .where({ id })
+        .first()
 }
 
 function insert(friend) {
@@ -35,15 +35,32 @@ function remove(id) {
         .del();
 }
 
-function update(id, changes) {
-    return db('friends')
+
+
+async function update(id, changes) {
+    let old = await findById(id)
+    console.log(old.rank)
+    const data_update = await db('friends')
         .where({ id })
         .update(changes)
-        .then(count => {
-            if (count > 0) {
-                return findById(id);
-            } else {
-                return null;
+    console.log(data_update)
+    if (data_update > 0) {
+        const updated = await findById(id)
+        console.log('updated', updated.users_id)
+        const users = await findByUser(updated.users_id)
+        console.log('users,', users)
+        users.friends.forEach(user => {
+            console.log({ user })
+            if (user.rank === updated.rank && user !== updated) {
+                if (old.rank > user.rank) {
+                    update(user.id, { ...user, rank: user.rank + 1 })
+                } else if (old.rank < user.rank) {
+                    update(user.id, { ...user, rank: user.rank - 1 })
+                }
             }
-        });
+        })
+        return findById(id);
+    } else {
+        return null;
+    }
 }

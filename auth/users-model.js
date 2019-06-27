@@ -13,7 +13,7 @@ module.exports = {
 };
 
 function find() {
-  return db('users').select('id', 'username', 'password');
+  return db('users');
 }
 
 async function findByUser(id) {

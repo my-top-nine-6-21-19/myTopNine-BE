@@ -8,7 +8,7 @@ const secrets = require('../secrets')
 
 router.post('/register', (req, res) => {
   let user = req.body;
-  const hash = bcrypt.hashSync(user.password, 4); 
+  const hash = bcrypt.hashSync(user.password, 4);
   user.password = hash;
 
   Users.add(user)
@@ -16,7 +16,12 @@ router.post('/register', (req, res) => {
       res.status(201).json(saved);
     })
     .catch(error => {
-      res.status(500).json(error);
+      if (error.errno == 19) {
+        res.status(405).json({ messaage: "username in use" })
+      } else {
+        res.status(500).json(error);
+      }
+
     });
 });
 
@@ -43,7 +48,7 @@ router.post('/login', (req, res) => {
     });
 });
 
-function generateToken (user){
+function generateToken(user) {
   const payload = {
     subject: user.id,
     username: user.username,
